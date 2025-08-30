@@ -1,0 +1,14 @@
+artifact_uri: file:///C:/gitrepo/GitHub/loan_eligible_ml_app/mlruns/0/150b7a7e2c5b430090216719722a436f/artifacts
+end_time: 1756556325350
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 150b7a7e2c5b430090216719722a436f
+run_name: GradientBoostingClassifier
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1756556316460
+status: 3
+tags: []
+user_id: Hazra

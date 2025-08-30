@@ -1,0 +1,10 @@
+artifact_location: file:///C:/gitrepo/GitHub/loan_eligible_ml_app/mlruns/0/models/m-54e3705dfb7b4838b4bfa3d0974ebbe3/artifacts
+creation_timestamp: 1756556318790
+experiment_id: '0'
+last_updated_timestamp: 1756556325328
+model_id: m-54e3705dfb7b4838b4bfa3d0974ebbe3
+model_type: null
+name: model
+source_run_id: 150b7a7e2c5b430090216719722a436f
+status: 2
+status_message: null
