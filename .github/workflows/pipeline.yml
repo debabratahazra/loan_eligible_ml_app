@@ -21,5 +21,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       - name: Run Unit tests
+        env:
+          DISABLE_MLFLOW: "1"
         run: |
           python -m pytest

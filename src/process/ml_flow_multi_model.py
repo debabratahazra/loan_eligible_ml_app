@@ -122,50 +122,79 @@ def ml_flow_multi_model():
         tracking_uri = f"file://{os.path.abspath(os.path.join(resource_filepath, 'ml_loan_runs'))}"
 
     # Set the tracking URI
-    mlflow.set_tracking_uri(tracking_uri)
+    if not os.getenv("DISABLE_MLFLOW"):
+        mlflow.set_tracking_uri(tracking_uri)
 
     for name, config in models.items():
-        with mlflow.start_run(run_name=name):
-            mlflow.log_param("model_name", name)
-            
+        if not os.getenv("DISABLE_MLFLOW"):
+            # With Mlflow
+            with mlflow.start_run(run_name=name):
+                mlflow.log_param("model_name", name)
+                
+                print(f"\nTraining and tuning {name}...")
+                grid_search = GridSearchCV(config['model'], config['params'], cv=5, scoring='f1', n_jobs=-1)
+                grid_search.fit(X_train_res, y_train_res)
+                
+                best_estimator = grid_search.best_estimator_
+                
+                print(f"Best parameters for {name}: {grid_search.best_params_}")
+                print(f"Best F1-score for {name}: {grid_search.best_score_}")
+                
+                y_pred = best_estimator.predict(X_train_res)
+                accuracy = accuracy_score(y_train_res, y_pred)
+                f1 = f1_score(y_train_res, y_pred)
+                roc_auc = roc_auc_score(y_train_res, best_estimator.predict_proba(X_train_res)[:, 1])
+                
+                print(f"Accuracy on resampled training data ({name}): {accuracy}")
+                print(f"Classification Report on resampled training data ({name}):\n{classification_report(y_train_res, y_pred)}")
+                print(f"ROC AUC Score on resampled training data ({name}): {roc_auc}")
+
+                # Log parameters and metrics to MLflow
+                mlflow.log_params(grid_search.best_params_)
+                mlflow.log_metric("f1_score", f1)
+                mlflow.log_metric("accuracy", accuracy)
+                mlflow.log_metric("roc_auc_score", roc_auc)
+                
+                # Infer the model signature
+                signature = infer_signature(X_train_res, best_estimator.predict(X_train_res))
+
+                # Define an input example using a sample of the training data
+                input_example = X_train_res.iloc[:1]  # Take the first row of the training data as an example
+
+                # Log the model with signature and input_example
+                mlflow.sklearn.log_model(sk_model=best_estimator, name="model", input_example=input_example, signature=signature)
+
+                if grid_search.best_score_ > best_score:
+                    best_score = grid_search.best_score_
+                    best_model = best_estimator
+                    best_model_name = name
+        else:
+            # Without MLflow
             print(f"\nTraining and tuning {name}...")
             grid_search = GridSearchCV(config['model'], config['params'], cv=5, scoring='f1', n_jobs=-1)
             grid_search.fit(X_train_res, y_train_res)
-            
+                
             best_estimator = grid_search.best_estimator_
-            
+                
             print(f"Best parameters for {name}: {grid_search.best_params_}")
             print(f"Best F1-score for {name}: {grid_search.best_score_}")
-            
+                
             y_pred = best_estimator.predict(X_train_res)
             accuracy = accuracy_score(y_train_res, y_pred)
             f1 = f1_score(y_train_res, y_pred)
             roc_auc = roc_auc_score(y_train_res, best_estimator.predict_proba(X_train_res)[:, 1])
-            
+                
             print(f"Accuracy on resampled training data ({name}): {accuracy}")
             print(f"Classification Report on resampled training data ({name}):\n{classification_report(y_train_res, y_pred)}")
             print(f"ROC AUC Score on resampled training data ({name}): {roc_auc}")
 
-            # Log parameters and metrics to MLflow
-            mlflow.log_params(grid_search.best_params_)
-            mlflow.log_metric("f1_score", f1)
-            mlflow.log_metric("accuracy", accuracy)
-            mlflow.log_metric("roc_auc_score", roc_auc)
-            
-            # Infer the model signature
-            signature = infer_signature(X_train_res, best_estimator.predict(X_train_res))
-
-            # Define an input example using a sample of the training data
-            input_example = X_train_res.iloc[:1]  # Take the first row of the training data as an example
-
-            # Log the model with signature and input_example
-            mlflow.sklearn.log_model(sk_model=best_estimator, name="model", input_example=input_example, signature=signature)
 
             if grid_search.best_score_ > best_score:
                 best_score = grid_search.best_score_
                 best_model = best_estimator
-                best_model_name = name
-
+                best_model_name = name    
+                
+                
     print(f"\nBest performing model: {best_model_name} with F1-score: {best_score}")
 
     # Save the best model and scaler
