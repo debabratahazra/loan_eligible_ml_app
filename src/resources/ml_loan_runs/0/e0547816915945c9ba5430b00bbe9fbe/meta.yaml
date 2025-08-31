@@ -1,0 +1,14 @@
+artifact_uri: file:///C:/gitrepo/GitHub/loan_eligible_ml_app/src/resources/ml_loan_runs/0/e0547816915945c9ba5430b00bbe9fbe/artifacts
+end_time: 1756617740749
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: e0547816915945c9ba5430b00bbe9fbe
+run_name: RandomForestClassifier
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1756617728822
+status: 3
+tags: []
+user_id: Hazra

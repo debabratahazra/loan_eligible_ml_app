@@ -1,0 +1,14 @@
+artifact_uri: file:///C:/gitrepo/GitHub/loan_eligible_ml_app/mlruns/0/81cade6ac6c3401e93aff90a421f1ad3/artifacts
+end_time: 1756616589883
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 81cade6ac6c3401e93aff90a421f1ad3
+run_name: LogisticRegression
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1756616573432
+status: 3
+tags: []
+user_id: Hazra
