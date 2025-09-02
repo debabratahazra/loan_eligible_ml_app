@@ -2,6 +2,7 @@ import joblib
 import os
 import numpy as np
 import pandas as pd
+import urllib.parse
 from imblearn.over_sampling import SMOTE
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder, StandardScaler
@@ -117,7 +118,11 @@ def ml_flow_multi_model():
     # Construct the tracking URI based on the platform
     if os.name == 'nt':  # Windows
         # Convert Windows path to a valid file:// URI
-        tracking_uri = f"file:///{os.path.abspath(os.path.join(resource_filepath, 'ml_loan_runs')).replace('\\', '/')}"
+        # tracking_uri = f"file:///{os.path.abspath(os.path.join(resource_filepath, 'ml_loan_runs')).replace('\\', '/')}"
+        # Convert Windows path to a valid file:// URI
+        abs_path = os.path.abspath(os.path.join(resource_filepath, 'ml_loan_runs'))
+        abs_path = abs_path.replace('\\', '/')  # Perform replacement outside the f-string
+        tracking_uri = f"file:///{abs_path}"
     else:  # macOS/Linux
         tracking_uri = f"file://{os.path.abspath(os.path.join(resource_filepath, 'ml_loan_runs'))}"
 

@@ -1,0 +1,40 @@
+artifact_path: file:///C:/gitrepo/GitHub/loan_eligible_ml_app/src/resources/ml_loan_runs/0/models/m-5c43b343a3bf4900b2be6442a0b14e6b/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.12.10
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.7.1
+is_signature_from_type_hint: false
+mlflow_version: 3.3.2
+model_id: m-5c43b343a3bf4900b2be6442a0b14e6b
+model_size_bytes: 1916
+model_uuid: m-5c43b343a3bf4900b2be6442a0b14e6b
+prompts: null
+run_id: 91cfd10411ee4da1bbca46e51c60b793
+saved_input_example_info:
+  artifact_path: input_example.json
+  pandas_orient: split
+  serving_input_path: serving_input_example.json
+  type: dataframe
+signature:
+  inputs: '[{"type": "long", "name": "Gender", "required": true}, {"type": "long",
+    "name": "Married", "required": true}, {"type": "long", "name": "Dependents", "required":
+    true}, {"type": "long", "name": "Education", "required": true}, {"type": "long",
+    "name": "Self_Employed", "required": true}, {"type": "double", "name": "ApplicantIncome",
+    "required": true}, {"type": "double", "name": "CoapplicantIncome", "required":
+    true}, {"type": "double", "name": "LoanAmount", "required": true}, {"type": "double",
+    "name": "Loan_Amount_Term", "required": true}, {"type": "double", "name": "Credit_History",
+    "required": true}, {"type": "long", "name": "Property_Area", "required": true}]'
+  outputs: '[{"type": "tensor", "tensor-spec": {"dtype": "int64", "shape": [-1]}}]'
+  params: null
+type_hint_from_example: false
+utc_time_created: '2025-09-01 16:54:43.130021'
